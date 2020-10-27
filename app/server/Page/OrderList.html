@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Order List</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<script src="/js/jquery.js" type="text/javascript"></script>
+		<script src="/js/bootstrap.min.js" type="text/javascript"></script>
+		<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/css/styles.css" rel="stylesheet">
+	</head>
+	<script>
+		//JQury
+		$(document).ready(function(){
+			
+			//show user account details
+			$("#myaccount").click(function(){
+                window.location.href = "http://127.0.0.1:9999/myaccount";
+            });
+			
+			$("#mainpage").click(function(){
+                window.location.href = "http://127.0.0.1:9999/";
+            });
+			
+			$("#goorder").click(function(){
+                window.location.href = "http://127.0.0.1:9999/";
+            });
+			
+			//set cookie over time for logout
+			$("#logout").click(function(){
+				document.cookie = "login=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+				document.location = "http://127.0.0.1:9999/";
+            });
+			//show user account details
+			$("#aboutus").click(function(){
+                window.location.href = "http://127.0.0.1:9999/aboutus";
+			});
+			//list user order list
+			$.ajax({
+				type: "POST",
+				url: 'http://127.0.0.1:9999/orderlist',
+				dataType:'JSON',
+				data:document.cookie,
+				success: function(response){	
+					//alert(JSON.stringify(response));
+					var r=JSON.stringify(response);
+					for(i=0; i<response.length; i++){
+						$("#listshow").append(
+							"DateTime:"+response[i]['Date']+"/"+
+							"Product:"+response[i]['Product']+"/"+
+							"Status:"+response[i]['OrderStatus']+"</br>"
+					
+						);
+					};	
+					alert("Any change, please call your agent");
+				},
+            });
+			
+		});
+
+		
+	</script>
+	<body>
+		<div id="wrapper"><!-- Sidebar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="#">LenLi</a>
+			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a id="myaccount" class="nav-link" href="#">My Account</a>
+				</li>
+				</li>
+				<li class="nav-item">
+					<a id="goorder" class="nav-link" href="#">Go Order</a>
+				</li>
+				<li class="nav-item">
+					<a id="aboutus" class="nav-link" href="#">About Us</a>
+				</li>
+				<li class="nav-item">
+					<a id="logout" class="nav-link" href="#">Logout</a>
+				</li>
+			</ul>
+			</div>
+			</nav>
+		<h1> Order List </h1>
+		<button id="mainpage" type="button" class="btn btn-success">Continues to order</button> <br>
+		
+		<p id="listshow"></p>
+		</div>
+		
+	</body>
+</html>
